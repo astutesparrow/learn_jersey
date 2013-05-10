@@ -1,0 +1,11 @@
+curl测试命令：
+
+1、curl http://localhost:8080/learn_jersey/rest/contacts
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><contacts><contact><address><city>Shanghai</city><street>Long Hua Street</street></address><address><city>Shanghai</city><street>Dong Quan Street</street></address><id>huangyim</id><name>Huang Yi Ming</name></contact></contacts>
+
+2、curl -HAccept:application/json http://localhost:8080/learn_jersey/rest/contacts
+
+{"contact":{"address":[{"city":"Shanghai","street":"Long Hua Street"},{"city":"Shanghai","street":"Dong Quan Street"}],"id":"huangyim","name":"Huang Yi Ming"}}
+
+3、curl -X PUT -HContent-type:application/xml --data "<contact><id>foo</id><name>bar</name></contact>" http://localhost:8080/learn_jersey/rest/contacts/foo
