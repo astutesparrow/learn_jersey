@@ -10,6 +10,11 @@
     <name>learn_jersey Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <skipTests>true</skipTests>
+        <wantedGroups>basic</wantedGroups>
+    </properties>
+
     <dependencies>
         <!-- jersey -->
         <dependency>
@@ -102,6 +107,22 @@
         <finalName>learn_jersey</finalName>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.14.1</version>
+                <configuration>
+                    <!-- 默认跳过测试 -->
+                    <!-- mvn -DskipTests=false 设置测试 -->
+                    <skipTests>${skipTests}</skipTests>
+
+                    <!-- 通过修改groups，可以变化要测试的组 -->
+                    <!-- 当然也可以设置默认组，然后通过命令行指定 -->
+                    <!-- mvn -DwantedGroups=basic,group1 设置要测试的组 -->
+                    <groups>${wantedGroups}</groups>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <!-- 测试jersey时，使用 mvn tomcat6:run 命令运行项目是不行的额，不知道为什么？ 使用 tomcat7 也不行！ -->
                 <groupId>org.apache.tomcat.maven</groupId>

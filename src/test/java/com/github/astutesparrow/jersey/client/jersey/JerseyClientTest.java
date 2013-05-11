@@ -21,13 +21,16 @@ import java.util.Arrays;
 public class JerseyClientTest {
     WebResource r = null;
 
-    @BeforeTest()
+    @BeforeGroups(groups = "contacts")
     public void initWebContactsResource() {
         Client c = Client.create();
         r = c.resource("http://localhost:8080/learn_jersey/rest/contacts");
     }
 
-    @Test(enabled = false)
+    /**
+     * 不加 accept的头，服务器默认是xml
+     */
+    @Test(groups = "contacts")
     public void getContacts() {
         ClientResponse response = r.get(ClientResponse.class);
         System.out.println( response.getStatus() );
@@ -36,12 +39,21 @@ public class JerseyClientTest {
         System.out.println(entity);
     }
 
-    @Test(enabled = false)
+    @Test(groups = "contacts")
+    public void getContactsJSON() {
+        ClientResponse response = r.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        System.out.println( response.getStatus() );
+        System.out.println( response.getHeaders().get("Content-Type") );
+        String entity = response.getEntity(String.class);
+        System.out.println(entity);
+    }
+
+    @Test(groups = "contacts")
     public void createContact() {
         Address[] addrs = {
                 new Address("Shanghai", "Ke Yuan Street")
         };
-        Contact c = new Contact("foo", "Foo Bar", Arrays.asList(addrs));
+        Contact c = new Contact("foo1", "Foo Bar", Arrays.asList(addrs));
 
         ClientResponse response = r
                 .path(c.getId())
@@ -50,7 +62,7 @@ public class JerseyClientTest {
         System.out.println(response.getStatus());
     }
 
-    @Test
+    @Test(groups = "contacts")
     public void deleteContact() {
         GenericType<JAXBElement<Contact>> generic = new GenericType<JAXBElement<Contact>>() {};
         JAXBElement<Contact> jaxbContact = r
@@ -62,6 +74,21 @@ public class JerseyClientTest {
 
         ClientResponse response = r.path("foo").delete(ClientResponse.class);
         System.out.println(response.getStatus());
+    }
+
+    @BeforeGroups(groups = "count")
+    public void initWebContactsCountResource() {
+        Client c = Client.create();
+        r = c.resource("http://localhost:8080/learn_jersey/rest/contacts/count");
+    }
+
+    @Test(groups = "count")
+    public void getContactsCount() {
+        ClientResponse response = r.get(ClientResponse.class);
+        System.out.println( response.getStatus() );
+        System.out.println( response.getHeaders().get("Content-Type") );
+        String entity = response.getEntity(String.class);
+        System.out.println(entity);
     }
 
 }
