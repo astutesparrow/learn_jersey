@@ -19,6 +19,7 @@ import java.util.Arrays;
  * @since: 2013-05-11
  */
 public class JerseyClientTest {
+
     WebResource r = null;
 
     @BeforeGroups(groups = "contacts")
